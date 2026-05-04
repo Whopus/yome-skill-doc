@@ -1,0 +1,481 @@
+{
+  "$schema": "https://yome.work/schema/signature.json",
+  "domain": "doc",
+  "signature_version": "1.0.0",
+  "label": { "zh": "Word 文档", "en": "Word Document" },
+  "helpSummary": "open, new, save, close, files, get, read, stats, set, append, insert, delete, fmt, find, replace, replace.all, highlight, select, select.all, cursor.home, cursor.end, table.add, table.delete, table.row.add, table.row.delete, table.col.add, table.col.delete, table.cell.set, table.merge, header.set, footer.set, header.clear, footer.clear, pagenum, break.page, break.section, break.column, break.line, sections, bookmark.add, bookmark.delete, bookmarks, link.add, link.delete, comment.add, comment.delete, comments, image.add, image.delete, shape.add, shape.delete, style.apply, styles, list.bullet, list.number, list.indent, list.outdent, toc.add, toc.update, toc.delete, page, columns, view, zoom, track.on, track.off, track.accept, track.reject, print, export, export.html, export.txt, export.rtf, recalc.fields, screen, alerts, undo, redo, version, batch",
+  "docs": {
+    "zh": "\n## doc 命令 — Word 文档\n\n### 文件\ndoc open <文件路径>                    打开 .docx/.doc 文件\ndoc new [<路径>] [--force]             新建文档（给路径则直接落盘）\ndoc save [--path=<另存路径>] [--force] 保存（可另存为 .docx 或 .doc）\ndoc close [--save=true|false]          关闭\ndoc files                              列出所有打开的文档\n\n### 段落读取\ndoc get                                列出所有段落（带预览）\ndoc read <段落序号>                    读取段落文本与字体\ndoc stats                              文档统计（字数/段数/字符数/页数）\n\n### 段落写入\ndoc set <段落序号> --text=<内容>       覆盖段落文本\ndoc append --text=<内容>               文档末尾追加段落\ndoc insert <段落序号> --text=<内容>    在指定段落前插入段落\ndoc delete <段落序号>                  删除段落\n\n### 格式\ndoc fmt <段落序号> [--bold] [--italic] [--size=<字号>] [--color=<颜色>] [--font=<字体>] [--align=left|center|right|justify]\n  颜色: 名称(black/red/blue/...) | #RRGGBB | R,G,B\n\n### 查找替换\ndoc find <关键词> [--matchCase] [--wholeWord]\ndoc replace <关键词> --with=<替换> [--matchCase] [--wholeWord]    替换首个\ndoc replace.all <关键词> --with=<替换> [--matchCase] [--wholeWord] 全部替换\ndoc highlight <段落序号> [--color=yellow|green|pink|blue|red|gray|none]\n\n### 选择/光标\ndoc select <段落序号>                  选择段落\ndoc select.all                         全选\ndoc cursor.home                        光标到文档开头\ndoc cursor.end                         光标到文档结尾\n\n### 表格\ndoc table.add [--index=<段落序号>] [--rows=N] [--cols=N]\ndoc table.delete <表格序号>\ndoc table.row.add <表格序号> [--count=1]\ndoc table.row.delete <表格序号> --row=N\ndoc table.col.add <表格序号> [--count=1]\ndoc table.col.delete <表格序号> --col=N\ndoc table.cell.set <表格序号> --row=N --col=N --text=<内容>\ndoc table.merge <表格序号> --fromRow --fromCol --toRow --toCol\n\n### 页眉页脚 / 页码\ndoc header.set <文本>\ndoc footer.set <文本>\ndoc header.clear\ndoc footer.clear\ndoc pagenum [--where=header|footer] [--align=left|center|right]\n\n### 分页 / 分节 / 分栏\ndoc break.page [--index=<段落序号>]\ndoc break.section [--index=<段落序号>] [--kind=continuous|next-page|even-page|odd-page]\ndoc break.column [--index=<段落序号>]\ndoc break.line [--index=<段落序号>]\ndoc sections                           列出所有节\n\n### 书签 / 超链接 / 批注\ndoc bookmark.add <段落序号> --name=<书签名>\ndoc bookmark.delete <书签名>\ndoc bookmarks\ndoc link.add <段落序号> --url=<URL> [--text=<显示文本>]\ndoc link.delete <段落序号>\ndoc comment.add <段落序号> --text=<内容>\ndoc comment.delete <批注序号>\ndoc comments                           列出所有批注\n\n### 图片 / 形状\ndoc image.add <图片路径> [--index=<段落序号>]\ndoc image.delete <图片序号>\ndoc shape.add [--kind=rectangle|oval|...] [--left --top --width --height] [--text=<str>]\ndoc shape.delete <形状序号>\n\n### 样式 / 列表\ndoc style.apply <段落序号> --style=<样式名>  e.g. \"Heading 1\", \"Normal\", \"Quote\"\ndoc styles                                  列出文档样式\ndoc list.bullet <段落序号>\ndoc list.number <段落序号>\ndoc list.indent <段落序号>\ndoc list.outdent <段落序号>\n\n### 目录\ndoc toc.add [--levels=3]               文档开头插入目录\ndoc toc.update                         更新所有目录\ndoc toc.delete                         删除所有目录\n\n### 页面 / 视图\ndoc page [--orientation=portrait|landscape] [--paper=letter|a4|legal|a3|a5] [--margin=点数]\ndoc columns <分栏数 1..6>\ndoc view <print|web|draft|outline>\ndoc zoom <10..400>\n\n### 修订\ndoc track.on / doc track.off\ndoc track.accept / doc track.reject\n\n### 打印 / 导出\ndoc print [--copies=N]\ndoc export <输出.pdf>                   导出 PDF\ndoc export.html <输出.html>             导出 HTML\ndoc export.txt <输出.txt>               导出纯文本\ndoc export.rtf <输出.rtf>               导出 RTF\n\n### 应用 / 工作簿\ndoc recalc.fields                       更新所有域\ndoc screen <on|off>                     屏幕刷新\ndoc alerts <on|off>                     弹窗提示\ndoc undo / doc redo\ndoc version                             返回 Word 版本\n\n路径: ~ 为主目录，相对路径基于 ~/Desktop\n除 open/new/files 外，所有命令作用于当前活动文档（需先 open 或 new）\n",
+    "en": "\n## doc command — Word Document\n\n### Files\ndoc open <file_path>                   Open .docx/.doc file\ndoc new [<path>] [--force]             Create new document (with path: create and save)\ndoc save [--path=<save_as_path>] [--force]   Save (or save as .docx / .doc)\ndoc close [--save=true|false]          Close\ndoc files                              List all open documents\n\n### Paragraph read\ndoc get                                List paragraphs with preview\ndoc read <paragraph_index>             Read paragraph text and font info\ndoc stats                              Document statistics (words/paragraphs/characters/pages)\n\n### Paragraph write\ndoc set <paragraph_index> --text=<content>     Overwrite paragraph text\ndoc append --text=<content>                    Append paragraph at end\ndoc insert <paragraph_index> --text=<content>  Insert paragraph before index\ndoc delete <paragraph_index>                   Delete paragraph\n\n### Format\ndoc fmt <paragraph_index> [--bold] [--italic] [--size=<font_size>] [--color=<color>] [--font=<font>] [--align=left|center|right|justify]\n  Color: name (black/red/blue/...) | #RRGGBB | R,G,B\n\n### Find / Replace\ndoc find <keyword> [--matchCase] [--wholeWord]\ndoc replace <keyword> --with=<replacement> [--matchCase] [--wholeWord]    Replace first match\ndoc replace.all <keyword> --with=<replacement> [--matchCase] [--wholeWord] Replace all\ndoc highlight <paragraph_index> [--color=yellow|green|pink|blue|red|gray|none]\n\n### Selection / Cursor\ndoc select <paragraph_index>           Select paragraph\ndoc select.all                         Select entire document\ndoc cursor.home                        Move cursor to document start\ndoc cursor.end                         Move cursor to document end\n\n### Tables\ndoc table.add [--index=<para_idx>] [--rows=N] [--cols=N]\ndoc table.delete <table_idx>\ndoc table.row.add <table_idx> [--count=1]\ndoc table.row.delete <table_idx> --row=N\ndoc table.col.add <table_idx> [--count=1]\ndoc table.col.delete <table_idx> --col=N\ndoc table.cell.set <table_idx> --row=N --col=N --text=<content>\ndoc table.merge <table_idx> --fromRow --fromCol --toRow --toCol\n\n### Headers / Footers / Page numbers\ndoc header.set <text>\ndoc footer.set <text>\ndoc header.clear\ndoc footer.clear\ndoc pagenum [--where=header|footer] [--align=left|center|right]\n\n### Page / Section / Column breaks\ndoc break.page [--index=<para_idx>]\ndoc break.section [--index=<para_idx>] [--kind=continuous|next-page|even-page|odd-page]\ndoc break.column [--index=<para_idx>]\ndoc break.line [--index=<para_idx>]\ndoc sections                           List all sections\n\n### Bookmarks / Hyperlinks / Comments\ndoc bookmark.add <paragraph_index> --name=<bookmark_name>\ndoc bookmark.delete <bookmark_name>\ndoc bookmarks\ndoc link.add <paragraph_index> --url=<url> [--text=<display>]\ndoc link.delete <paragraph_index>\ndoc comment.add <paragraph_index> --text=<content>\ndoc comment.delete <comment_idx>\ndoc comments                           List all comments\n\n### Images / Shapes\ndoc image.add <image_path> [--index=<paragraph_index>]\ndoc image.delete <image_idx>\ndoc shape.add [--kind=rectangle|oval|...] [--left --top --width --height] [--text=<str>]\ndoc shape.delete <shape_idx>\n\n### Styles / Lists\ndoc style.apply <paragraph_index> --style=<style_name>  e.g. \"Heading 1\", \"Normal\", \"Quote\"\ndoc styles                                              List document styles\ndoc list.bullet <paragraph_index>\ndoc list.number <paragraph_index>\ndoc list.indent <paragraph_index>\ndoc list.outdent <paragraph_index>\n\n### Table of Contents\ndoc toc.add [--levels=3]               Insert TOC at document start\ndoc toc.update                         Refresh all TOCs\ndoc toc.delete                         Remove all TOCs\n\n### Page / View\ndoc page [--orientation=portrait|landscape] [--paper=letter|a4|legal|a3|a5] [--margin=points]\ndoc columns <count 1..6>\ndoc view <print|web|draft|outline>\ndoc zoom <10..400>\n\n### Track Changes\ndoc track.on / doc track.off\ndoc track.accept / doc track.reject\n\n### Print / Export\ndoc print [--copies=N]\ndoc export <output.pdf>                Export as PDF\ndoc export.html <output.html>          Export as HTML\ndoc export.txt <output.txt>            Export as plain text\ndoc export.rtf <output.rtf>            Export as RTF\n\n### Application\ndoc recalc.fields                      Update all fields\ndoc screen <on|off>                    Screen updating\ndoc alerts <on|off>                    Display alerts\ndoc undo / doc redo\ndoc version                            Return Word version\n\nPath: ~ is home directory, relative paths are based on ~/Desktop\nAll commands except open/new/files operate on the active document (open or new first)\n"
+  },
+  "commands": {
+    "open": {
+      "usage": { "zh": "doc open <文件路径>", "en": "doc open <file_path>" },
+      "description": { "zh": "打开 .docx/.doc 文件", "en": "Open .docx/.doc file" },
+      "positional": "path",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "new": {
+      "usage": { "zh": "doc new [<路径>] [--force]", "en": "doc new [<path>] [--force]" },
+      "description": { "zh": "新建文档（给路径则直接落盘）", "en": "Create new document (with path: create and save)" },
+      "positional": "path",
+      "params": {
+        "path":  { "description": { "zh": "保存路径 (.docx)", "en": "Save path (.docx)" } },
+        "force": { "description": { "zh": "已存在时覆盖", "en": "Overwrite if exists" } }
+      },
+      "since": "1.0.0"
+    },
+    "save": {
+      "usage": { "zh": "doc save [--path=<另存>] [--force]", "en": "doc save [--path=<save_as>] [--force]" },
+      "description": { "zh": "保存当前文档", "en": "Save current document" },
+      "params": {
+        "path":  { "description": { "zh": "另存为路径", "en": "Save-as path" } },
+        "force": { "description": { "zh": "已存在时覆盖", "en": "Overwrite if exists" } }
+      },
+      "since": "1.0.0"
+    },
+    "close": {
+      "usage": "doc close [--save=true|false]",
+      "description": { "zh": "关闭当前文档", "en": "Close current document" },
+      "params": { "save": { "description": { "zh": "是否保存", "en": "Whether to save" }, "values": ["true", "false"] } },
+      "since": "1.0.0"
+    },
+    "files": {
+      "usage": "doc files",
+      "description": { "zh": "列出所有打开文档", "en": "List all open documents" },
+      "params": {},
+      "since": "1.0.0"
+    },
+
+    "get": {
+      "usage": "doc get",
+      "description": { "zh": "列出所有段落（含预览）", "en": "List paragraphs (with preview)" },
+      "params": {},
+      "since": "1.0.0"
+    },
+    "read": {
+      "usage": { "zh": "doc read <段落序号>", "en": "doc read <paragraph_index>" },
+      "description": { "zh": "读取段落文本与字体", "en": "Read paragraph text + font" },
+      "positional": "index",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "stats": {
+      "usage": "doc stats",
+      "description": { "zh": "字数/段数/字符数/页数", "en": "Words/paragraphs/characters/pages" },
+      "params": {},
+      "since": "1.0.0"
+    },
+
+    "set": {
+      "usage": { "zh": "doc set <段落序号> --text=<内容>", "en": "doc set <paragraph_index> --text=<content>" },
+      "description": { "zh": "覆盖段落文本", "en": "Overwrite paragraph text" },
+      "positional": "index",
+      "params": { "text": { "required": true, "description": { "zh": "段落文本", "en": "Paragraph text" } } },
+      "since": "1.0.0"
+    },
+    "append": {
+      "usage": { "zh": "doc append --text=<内容>", "en": "doc append --text=<content>" },
+      "description": { "zh": "末尾追加段落", "en": "Append paragraph at end" },
+      "params": { "text": { "required": true, "description": { "zh": "段落文本", "en": "Paragraph text" } } },
+      "since": "1.0.0"
+    },
+    "insert": {
+      "usage": { "zh": "doc insert <段落序号> --text=<内容>", "en": "doc insert <paragraph_index> --text=<content>" },
+      "description": { "zh": "在指定段落前插入", "en": "Insert before paragraph" },
+      "positional": "index",
+      "params": { "text": { "required": true, "description": { "zh": "段落文本", "en": "Paragraph text" } } },
+      "since": "1.0.0"
+    },
+    "delete": {
+      "usage": { "zh": "doc delete <段落序号>", "en": "doc delete <paragraph_index>" },
+      "description": { "zh": "删除段落", "en": "Delete paragraph" },
+      "positional": "index",
+      "params": {},
+      "since": "1.0.0"
+    },
+
+    "fmt": {
+      "usage": { "zh": "doc fmt <段落序号> [--bold] [--italic] [--size] [--color] [--font] [--align]", "en": "doc fmt <paragraph_index> [--bold] [--italic] [--size] [--color] [--font] [--align]" },
+      "description": { "zh": "格式化段落（多属性可叠加）", "en": "Format paragraph (combine attrs)" },
+      "positional": "index",
+      "params": {
+        "bold":   { "description": { "zh": "加粗",   "en": "Bold" } },
+        "italic": { "description": { "zh": "斜体",   "en": "Italic" } },
+        "size":   { "description": { "zh": "字号 (pt)", "en": "Font size (pt)" } },
+        "color":  { "description": { "zh": "字体颜色（名称 / #RRGGBB / R,G,B）", "en": "Font color (name / #RRGGBB / R,G,B)" } },
+        "font":   { "description": { "zh": "字体名称", "en": "Font name" } },
+        "align":  { "description": { "zh": "对齐方式", "en": "Alignment" }, "values": ["left", "center", "right", "justify"] }
+      },
+      "since": "1.0.0"
+    },
+
+    "find": {
+      "usage": { "zh": "doc find <关键词> [--matchCase] [--wholeWord]", "en": "doc find <keyword> [--matchCase] [--wholeWord]" },
+      "description": { "zh": "查找首个匹配位置", "en": "Find first match" },
+      "positional": "what",
+      "params": {
+        "matchCase": { "description": { "zh": "区分大小写", "en": "Match case" } },
+        "wholeWord": { "description": { "zh": "整词匹配",   "en": "Match whole word" } }
+      },
+      "since": "1.0.0"
+    },
+    "replace": {
+      "usage": { "zh": "doc replace <关键词> --with=<替换> [--matchCase] [--wholeWord]", "en": "doc replace <keyword> --with=<replacement> [--matchCase] [--wholeWord]" },
+      "description": { "zh": "替换首个匹配", "en": "Replace first match" },
+      "positional": "what",
+      "params": {
+        "with":      { "required": true, "description": { "zh": "替换为", "en": "Replacement text" } },
+        "matchCase": { "description": { "zh": "区分大小写", "en": "Match case" } },
+        "wholeWord": { "description": { "zh": "整词匹配",   "en": "Match whole word" } }
+      },
+      "since": "1.0.0"
+    },
+    "replace.all": {
+      "usage": { "zh": "doc replace.all <关键词> --with=<替换> [--matchCase] [--wholeWord]", "en": "doc replace.all <keyword> --with=<replacement> [--matchCase] [--wholeWord]" },
+      "description": { "zh": "替换全部", "en": "Replace all" },
+      "positional": "what",
+      "params": {
+        "with":      { "required": true, "description": { "zh": "替换为", "en": "Replacement text" } },
+        "matchCase": { "description": { "zh": "区分大小写", "en": "Match case" } },
+        "wholeWord": { "description": { "zh": "整词匹配",   "en": "Match whole word" } }
+      },
+      "since": "1.0.0"
+    },
+    "highlight": {
+      "usage": { "zh": "doc highlight <段落序号> [--color=yellow|green|pink|blue|red|gray|none]", "en": "doc highlight <paragraph_index> [--color=yellow|green|pink|blue|red|gray|none]" },
+      "description": { "zh": "高亮段落", "en": "Highlight paragraph" },
+      "positional": "index",
+      "params": { "color": { "description": { "zh": "高亮色", "en": "Highlight color" }, "values": ["yellow", "green", "pink", "blue", "red", "gray", "none"] } },
+      "since": "1.0.0"
+    },
+
+    "select": {
+      "usage": { "zh": "doc select <段落序号>", "en": "doc select <paragraph_index>" },
+      "description": { "zh": "选择段落", "en": "Select paragraph" },
+      "positional": "index",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "select.all": { "usage": "doc select.all", "description": { "zh": "全选", "en": "Select all" }, "params": {}, "since": "1.0.0" },
+    "cursor.home": { "usage": "doc cursor.home", "description": { "zh": "光标到文档开头", "en": "Cursor to document start" }, "params": {}, "since": "1.0.0" },
+    "cursor.end":  { "usage": "doc cursor.end",  "description": { "zh": "光标到文档结尾", "en": "Cursor to document end" }, "params": {}, "since": "1.0.0" },
+
+    "table.add": {
+      "usage": { "zh": "doc table.add [--index=<段落序号>] [--rows=N] [--cols=N]", "en": "doc table.add [--index=<para_idx>] [--rows=N] [--cols=N]" },
+      "description": { "zh": "插入表格", "en": "Insert table" },
+      "params": {
+        "index": { "description": { "zh": "插入位置（段落序号），默认为文档末尾", "en": "Anchor paragraph index (default: end of doc)" } },
+        "rows":  { "description": { "zh": "行数 (默认 3)", "en": "Row count (default 3)" } },
+        "cols":  { "description": { "zh": "列数 (默认 3)", "en": "Column count (default 3)" } }
+      },
+      "since": "1.0.0"
+    },
+    "table.delete": {
+      "usage": { "zh": "doc table.delete <表格序号>", "en": "doc table.delete <table_idx>" },
+      "description": { "zh": "删除表格", "en": "Delete table" },
+      "positional": "index",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "table.row.add": {
+      "usage": { "zh": "doc table.row.add <表格序号> [--count=1]", "en": "doc table.row.add <table_idx> [--count=1]" },
+      "description": { "zh": "在表格末尾添加行", "en": "Append rows to table" },
+      "positional": "table",
+      "params": { "count": { "description": { "zh": "数量", "en": "Count" } } },
+      "since": "1.0.0"
+    },
+    "table.row.delete": {
+      "usage": { "zh": "doc table.row.delete <表格序号> --row=N", "en": "doc table.row.delete <table_idx> --row=N" },
+      "description": { "zh": "删除表格指定行", "en": "Delete table row" },
+      "positional": "table",
+      "params": { "row": { "required": true, "description": { "zh": "行号 (1-based)", "en": "Row index (1-based)" } } },
+      "since": "1.0.0"
+    },
+    "table.col.add": {
+      "usage": { "zh": "doc table.col.add <表格序号> [--count=1]", "en": "doc table.col.add <table_idx> [--count=1]" },
+      "description": { "zh": "在表格末尾添加列", "en": "Append columns to table" },
+      "positional": "table",
+      "params": { "count": { "description": { "zh": "数量", "en": "Count" } } },
+      "since": "1.0.0"
+    },
+    "table.col.delete": {
+      "usage": { "zh": "doc table.col.delete <表格序号> --col=N", "en": "doc table.col.delete <table_idx> --col=N" },
+      "description": { "zh": "删除表格指定列", "en": "Delete table column" },
+      "positional": "table",
+      "params": { "col": { "required": true, "description": { "zh": "列号 (1-based)", "en": "Column index (1-based)" } } },
+      "since": "1.0.0"
+    },
+    "table.cell.set": {
+      "usage": { "zh": "doc table.cell.set <表格序号> --row=N --col=N --text=<内容>", "en": "doc table.cell.set <table_idx> --row=N --col=N --text=<content>" },
+      "description": { "zh": "设置表格单元格文本", "en": "Set table cell text" },
+      "positional": "table",
+      "params": {
+        "row":  { "required": true, "description": { "zh": "行号", "en": "Row index" } },
+        "col":  { "required": true, "description": { "zh": "列号", "en": "Column index" } },
+        "text": { "required": true, "description": { "zh": "单元格文本", "en": "Cell text" } }
+      },
+      "since": "1.0.0"
+    },
+    "table.merge": {
+      "usage": { "zh": "doc table.merge <表格序号> --fromRow --fromCol --toRow --toCol", "en": "doc table.merge <table_idx> --fromRow --fromCol --toRow --toCol" },
+      "description": { "zh": "合并表格单元格", "en": "Merge table cells" },
+      "positional": "table",
+      "params": {
+        "fromRow": { "required": true, "description": { "zh": "起始行", "en": "From row" } },
+        "fromCol": { "required": true, "description": { "zh": "起始列", "en": "From col" } },
+        "toRow":   { "required": true, "description": { "zh": "结束行", "en": "To row" } },
+        "toCol":   { "required": true, "description": { "zh": "结束列", "en": "To col" } }
+      },
+      "since": "1.0.0"
+    },
+
+    "header.set": { "usage": { "zh": "doc header.set <文本>", "en": "doc header.set <text>" }, "description": { "zh": "设置页眉", "en": "Set header" }, "positional": "text", "params": {}, "since": "1.0.0" },
+    "footer.set": { "usage": { "zh": "doc footer.set <文本>", "en": "doc footer.set <text>" }, "description": { "zh": "设置页脚", "en": "Set footer" }, "positional": "text", "params": {}, "since": "1.0.0" },
+    "header.clear": { "usage": "doc header.clear", "description": { "zh": "清除页眉", "en": "Clear header" }, "params": {}, "since": "1.0.0" },
+    "footer.clear": { "usage": "doc footer.clear", "description": { "zh": "清除页脚", "en": "Clear footer" }, "params": {}, "since": "1.0.0" },
+    "pagenum": {
+      "usage": { "zh": "doc pagenum [--where=header|footer] [--align=left|center|right]", "en": "doc pagenum [--where=header|footer] [--align=left|center|right]" },
+      "description": { "zh": "在页眉/页脚插入页码字段", "en": "Insert PAGE field in header/footer" },
+      "params": {
+        "where": { "description": { "zh": "插入位置", "en": "Where" }, "values": ["header", "footer"] },
+        "align": { "description": { "zh": "对齐方式", "en": "Alignment" }, "values": ["left", "center", "right"] }
+      },
+      "since": "1.0.0"
+    },
+
+    "break.page": {
+      "usage": { "zh": "doc break.page [--index=<段落序号>]", "en": "doc break.page [--index=<para_idx>]" },
+      "description": { "zh": "插入分页符", "en": "Insert page break" },
+      "params": { "index": { "description": { "zh": "锚点段落（默认末尾）", "en": "Anchor paragraph (default end)" } } },
+      "since": "1.0.0"
+    },
+    "break.section": {
+      "usage": { "zh": "doc break.section [--index=<段落序号>] [--kind=continuous|next-page|even-page|odd-page]", "en": "doc break.section [--index=<para_idx>] [--kind=continuous|next-page|even-page|odd-page]" },
+      "description": { "zh": "插入分节符", "en": "Insert section break" },
+      "params": {
+        "index": { "description": { "zh": "锚点段落", "en": "Anchor paragraph" } },
+        "kind":  { "description": { "zh": "分节类型", "en": "Section break kind" }, "values": ["continuous", "next-page", "even-page", "odd-page"] }
+      },
+      "since": "1.0.0"
+    },
+    "break.column": {
+      "usage": { "zh": "doc break.column [--index=<段落序号>]", "en": "doc break.column [--index=<para_idx>]" },
+      "description": { "zh": "插入分栏符", "en": "Insert column break" },
+      "params": { "index": { "description": { "zh": "锚点段落", "en": "Anchor paragraph" } } },
+      "since": "1.0.0"
+    },
+    "break.line": {
+      "usage": { "zh": "doc break.line [--index=<段落序号>]", "en": "doc break.line [--index=<para_idx>]" },
+      "description": { "zh": "插入手动换行符", "en": "Insert line break" },
+      "params": { "index": { "description": { "zh": "锚点段落", "en": "Anchor paragraph" } } },
+      "since": "1.0.0"
+    },
+    "sections": { "usage": "doc sections", "description": { "zh": "列出所有节", "en": "List all sections" }, "params": {}, "since": "1.0.0" },
+
+    "bookmark.add": {
+      "usage": { "zh": "doc bookmark.add <段落序号> --name=<书签名>", "en": "doc bookmark.add <paragraph_index> --name=<bookmark_name>" },
+      "description": { "zh": "添加书签", "en": "Add bookmark" },
+      "positional": "index",
+      "params": { "name": { "required": true, "description": { "zh": "书签名", "en": "Bookmark name" } } },
+      "since": "1.0.0"
+    },
+    "bookmark.delete": {
+      "usage": { "zh": "doc bookmark.delete <书签名>", "en": "doc bookmark.delete <bookmark_name>" },
+      "description": { "zh": "删除书签", "en": "Delete bookmark" },
+      "positional": "name",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "bookmarks": { "usage": "doc bookmarks", "description": { "zh": "列出所有书签", "en": "List all bookmarks" }, "params": {}, "since": "1.0.0" },
+
+    "link.add": {
+      "usage": { "zh": "doc link.add <段落序号> --url=<URL> [--text=<显示>]", "en": "doc link.add <paragraph_index> --url=<url> [--text=<display>]" },
+      "description": { "zh": "添加超链接", "en": "Add hyperlink" },
+      "positional": "index",
+      "params": {
+        "url":  { "required": true, "description": { "zh": "URL", "en": "URL" } },
+        "text": { "description": { "zh": "显示文本（可选，覆盖原段落）", "en": "Display text (optional, overrides paragraph)" } }
+      },
+      "since": "1.0.0"
+    },
+    "link.delete": {
+      "usage": { "zh": "doc link.delete <段落序号>", "en": "doc link.delete <paragraph_index>" },
+      "description": { "zh": "删除该段落的超链接", "en": "Delete paragraph's hyperlinks" },
+      "positional": "index",
+      "params": {},
+      "since": "1.0.0"
+    },
+
+    "comment.add": {
+      "usage": { "zh": "doc comment.add <段落序号> --text=<内容>", "en": "doc comment.add <paragraph_index> --text=<content>" },
+      "description": { "zh": "添加批注", "en": "Add comment" },
+      "positional": "index",
+      "params": { "text": { "required": true, "description": { "zh": "批注内容", "en": "Comment text" } } },
+      "since": "1.0.0"
+    },
+    "comment.delete": {
+      "usage": { "zh": "doc comment.delete <批注序号>", "en": "doc comment.delete <comment_idx>" },
+      "description": { "zh": "删除批注", "en": "Delete comment" },
+      "positional": "comment",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "comments": { "usage": "doc comments", "description": { "zh": "列出所有批注", "en": "List all comments" }, "params": {}, "since": "1.0.0" },
+
+    "image.add": {
+      "usage": { "zh": "doc image.add <图片路径> [--index=<段落序号>]", "en": "doc image.add <image_path> [--index=<para_idx>]" },
+      "description": { "zh": "插入内联图片", "en": "Insert inline picture" },
+      "positional": "path",
+      "params": { "index": { "description": { "zh": "锚点段落（默认末尾）", "en": "Anchor (default end)" } } },
+      "since": "1.0.0"
+    },
+    "image.delete": {
+      "usage": { "zh": "doc image.delete <图片序号>", "en": "doc image.delete <image_idx>" },
+      "description": { "zh": "删除内联图片", "en": "Delete inline picture" },
+      "positional": "index",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "shape.add": {
+      "usage": { "zh": "doc shape.add [--kind=rectangle|oval|...] [--left --top --width --height] [--text=<str>]", "en": "doc shape.add [--kind=rectangle|oval|...] [--left --top --width --height] [--text=<str>]" },
+      "description": { "zh": "插入形状", "en": "Insert shape" },
+      "params": {
+        "kind":   { "description": { "zh": "形状类型", "en": "Shape kind" }, "values": ["rectangle", "oval", "roundedRect", "triangle", "rightArrow", "star", "pentagon", "diamond", "hexagon", "cloud", "lightningBolt", "heart"] },
+        "left":   { "description": { "zh": "left 坐标 (pt)", "en": "Left position (pt)" } },
+        "top":    { "description": { "zh": "top 坐标 (pt)",  "en": "Top position (pt)" } },
+        "width":  { "description": { "zh": "宽度 (pt)",      "en": "Width (pt)" } },
+        "height": { "description": { "zh": "高度 (pt)",      "en": "Height (pt)" } },
+        "text":   { "description": { "zh": "形状文本",       "en": "Body text" } }
+      },
+      "since": "1.0.0"
+    },
+    "shape.delete": {
+      "usage": { "zh": "doc shape.delete <形状序号>", "en": "doc shape.delete <shape_idx>" },
+      "description": { "zh": "删除形状", "en": "Delete shape" },
+      "positional": "index",
+      "params": {},
+      "since": "1.0.0"
+    },
+
+    "style.apply": {
+      "usage": { "zh": "doc style.apply <段落序号> --style=<样式名>", "en": "doc style.apply <paragraph_index> --style=<style_name>" },
+      "description": { "zh": "对段落应用样式（如 'Heading 1'）", "en": "Apply style to paragraph (e.g. 'Heading 1')" },
+      "positional": "index",
+      "params": { "style": { "required": true, "description": { "zh": "样式名（本地化名）", "en": "Style name (localized)" } } },
+      "since": "1.0.0"
+    },
+    "styles": { "usage": "doc styles", "description": { "zh": "列出文档可用样式", "en": "List document styles" }, "params": {}, "since": "1.0.0" },
+
+    "list.bullet":  { "usage": { "zh": "doc list.bullet <段落序号>",  "en": "doc list.bullet <paragraph_index>" },  "description": { "zh": "段落转项目符号列表", "en": "Apply bullet list" },  "positional": "index", "params": {}, "since": "1.0.0" },
+    "list.number":  { "usage": { "zh": "doc list.number <段落序号>",  "en": "doc list.number <paragraph_index>" },  "description": { "zh": "段落转编号列表",   "en": "Apply numbered list" }, "positional": "index", "params": {}, "since": "1.0.0" },
+    "list.indent":  { "usage": { "zh": "doc list.indent <段落序号>",  "en": "doc list.indent <paragraph_index>" },  "description": { "zh": "增加段落缩进",     "en": "Increase indent" },     "positional": "index", "params": {}, "since": "1.0.0" },
+    "list.outdent": { "usage": { "zh": "doc list.outdent <段落序号>", "en": "doc list.outdent <paragraph_index>" }, "description": { "zh": "减少段落缩进",     "en": "Decrease indent" },     "positional": "index", "params": {}, "since": "1.0.0" },
+
+    "toc.add": {
+      "usage": { "zh": "doc toc.add [--levels=3]", "en": "doc toc.add [--levels=3]" },
+      "description": { "zh": "在文档开头插入目录", "en": "Insert TOC at document start" },
+      "params": { "levels": { "description": { "zh": "标题层级 1..9 (默认 3)", "en": "Heading levels 1..9 (default 3)" } } },
+      "since": "1.0.0"
+    },
+    "toc.update": { "usage": "doc toc.update", "description": { "zh": "更新所有目录", "en": "Refresh all TOCs" }, "params": {}, "since": "1.0.0" },
+    "toc.delete": { "usage": "doc toc.delete", "description": { "zh": "删除所有目录", "en": "Remove all TOCs" }, "params": {}, "since": "1.0.0" },
+
+    "page": {
+      "usage": { "zh": "doc page [--orientation=portrait|landscape] [--paper=letter|a4|legal|a3|a5] [--margin=点数]", "en": "doc page [--orientation=portrait|landscape] [--paper=letter|a4|legal|a3|a5] [--margin=points]" },
+      "description": { "zh": "页面设置", "en": "Page setup" },
+      "params": {
+        "orientation": { "description": { "zh": "纸张方向", "en": "Orientation" }, "values": ["portrait", "landscape"] },
+        "paper":       { "description": { "zh": "纸张大小", "en": "Paper size" }, "values": ["letter", "a4", "legal", "a3", "a5"] },
+        "margin":      { "description": { "zh": "四周页边距 (点)", "en": "Margin (points)" } }
+      },
+      "since": "1.0.0"
+    },
+    "columns": {
+      "usage": { "zh": "doc columns <分栏数 1..6>", "en": "doc columns <count 1..6>" },
+      "description": { "zh": "设置分栏数", "en": "Set column count" },
+      "positional": "count",
+      "params": {},
+      "since": "1.0.0"
+    },
+
+    "view": {
+      "usage": { "zh": "doc view <print|web|draft|outline>", "en": "doc view <print|web|draft|outline>" },
+      "description": { "zh": "切换视图模式", "en": "Switch view mode" },
+      "positional": "mode",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "zoom": {
+      "usage": { "zh": "doc zoom <10..400>", "en": "doc zoom <10..400>" },
+      "description": { "zh": "视图缩放百分比", "en": "View zoom percentage" },
+      "positional": "level",
+      "params": {},
+      "since": "1.0.0"
+    },
+
+    "track.on":     { "usage": "doc track.on",     "description": { "zh": "开启修订", "en": "Enable track changes" },  "params": {}, "since": "1.0.0" },
+    "track.off":    { "usage": "doc track.off",    "description": { "zh": "关闭修订", "en": "Disable track changes" }, "params": {}, "since": "1.0.0" },
+    "track.accept": { "usage": "doc track.accept", "description": { "zh": "接受所有修订", "en": "Accept all revisions" }, "params": {}, "since": "1.0.0" },
+    "track.reject": { "usage": "doc track.reject", "description": { "zh": "拒绝所有修订", "en": "Reject all revisions" }, "params": {}, "since": "1.0.0" },
+
+    "print": {
+      "usage": "doc print [--copies=N]",
+      "description": { "zh": "打印文档", "en": "Print document" },
+      "params": { "copies": { "description": { "zh": "份数", "en": "Number of copies" } } },
+      "since": "1.0.0"
+    },
+    "export": {
+      "usage": { "zh": "doc export <输出.pdf>", "en": "doc export <output.pdf>" },
+      "description": { "zh": "导出 PDF", "en": "Export as PDF" },
+      "positional": "path",
+      "params": { "force": { "description": { "zh": "已存在时覆盖", "en": "Overwrite if exists" } } },
+      "since": "1.0.0"
+    },
+    "export.html": {
+      "usage": { "zh": "doc export.html <输出.html>", "en": "doc export.html <output.html>" },
+      "description": { "zh": "导出 HTML", "en": "Export as HTML" },
+      "positional": "path",
+      "params": { "force": { "description": { "zh": "已存在时覆盖", "en": "Overwrite if exists" } } },
+      "since": "1.0.0"
+    },
+    "export.txt": {
+      "usage": { "zh": "doc export.txt <输出.txt>", "en": "doc export.txt <output.txt>" },
+      "description": { "zh": "导出纯文本", "en": "Export as plain text" },
+      "positional": "path",
+      "params": { "force": { "description": { "zh": "已存在时覆盖", "en": "Overwrite if exists" } } },
+      "since": "1.0.0"
+    },
+    "export.rtf": {
+      "usage": { "zh": "doc export.rtf <输出.rtf>", "en": "doc export.rtf <output.rtf>" },
+      "description": { "zh": "导出 RTF", "en": "Export as RTF" },
+      "positional": "path",
+      "params": { "force": { "description": { "zh": "已存在时覆盖", "en": "Overwrite if exists" } } },
+      "since": "1.0.0"
+    },
+
+    "recalc.fields": { "usage": "doc recalc.fields", "description": { "zh": "更新所有域", "en": "Update all fields" }, "params": {}, "since": "1.0.0" },
+    "screen": {
+      "usage": { "zh": "doc screen <on|off>", "en": "doc screen <on|off>" },
+      "description": { "zh": "屏幕刷新开关", "en": "Toggle screen updating" },
+      "positional": "state",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "alerts": {
+      "usage": { "zh": "doc alerts <on|off>", "en": "doc alerts <on|off>" },
+      "description": { "zh": "弹窗提示开关", "en": "Toggle display alerts" },
+      "positional": "state",
+      "params": {},
+      "since": "1.0.0"
+    },
+    "undo": { "usage": "doc undo", "description": { "zh": "撤销", "en": "Undo" }, "params": {}, "since": "1.0.0" },
+    "redo": { "usage": "doc redo", "description": { "zh": "重做", "en": "Redo" }, "params": {}, "since": "1.0.0" },
+    "version": { "usage": "doc version", "description": { "zh": "返回 Word 版本号", "en": "Return Word version" }, "params": {}, "since": "1.0.0" }
+  },
+  "compactDocs": {
+    "zh": "doc — Word: open/new/save/close/files | get | read <i> | stats | set/insert/delete <i> | append --text | fmt <i> [--bold --italic --size --color --font --align] | find/replace[.all] [--matchCase --wholeWord] | highlight <i> | select[.all]/cursor.home/end | table.add[--rows --cols]/.delete/.row.add/.row.delete/.col.add/.col.delete/.cell.set/.merge | header.set/clear, footer.set/clear, pagenum | break.page/section/column/line | sections | bookmark.add/delete, bookmarks | link.add/delete | comment.add/delete, comments | image.add/delete, shape.add/delete | style.apply/styles | list.bullet/number/indent/outdent | toc.add/update/delete | page/columns/view/zoom | track.on/off/accept/reject | print/export[.html/.txt/.rtf] | recalc.fields/screen/alerts/undo/redo/version",
+    "en": "doc — Word: open/new/save/close/files | get | read <i> | stats | set/insert/delete <i> | append --text | fmt <i> [--bold --italic --size --color --font --align] | find/replace[.all] [--matchCase --wholeWord] | highlight <i> | select[.all]/cursor.home/end | table.add[--rows --cols]/.delete/.row.add/.row.delete/.col.add/.col.delete/.cell.set/.merge | header.set/clear, footer.set/clear, pagenum | break.page/section/column/line | sections | bookmark.add/delete, bookmarks | link.add/delete | comment.add/delete, comments | image.add/delete, shape.add/delete | style.apply/styles | list.bullet/number/indent/outdent | toc.add/update/delete | page/columns/view/zoom | track.on/off/accept/reject | print/export[.html/.txt/.rtf] | recalc.fields/screen/alerts/undo/redo/version"
+  }
+}

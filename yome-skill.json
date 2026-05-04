@@ -1,0 +1,144 @@
+{
+  "$schema": "https://yome.work/schema/yome-skill.json",
+  "slug": "@yome/doc",
+  "name": "Word",
+  "description": "Word 文档全功能命令（基础读写 + 表格/页眉页脚/查找替换/书签/超链接/批注/图片形状/样式/列表/目录/分节/页面设置/打印/视图/修订 等）",
+  "domain": "doc",
+  "version": "1.0.0",
+  "official": true,
+  "homepage": "https://yome.work/skills/@yome/doc",
+  "repo": "https://github.com/Whopus/yome-skill-doc",
+  "yome_min_version": "1.0.0",
+  "platforms": ["macos"],
+  "delivery": {
+    "macos": {
+      "backend": "ota",
+      "package": "backends/macos",
+      "manifest": "manifest.json",
+      "implements_signature": ">=1.0.0 <2.0.0"
+    }
+  },
+  "ota_overlay": {
+    "signature_version": "1.0.0",
+    "viewer_version": "1.0.0",
+    "data_version": "1.0.0"
+  },
+  "capabilities": ["fs:read", "fs:write", "applescript"],
+  "system_capabilities": ["fs:read", "fs:write", "applescript"],
+  "permissions_summary": {
+    "zh": "读写 .docx/.doc 文件，调用 macOS Microsoft Word",
+    "en": "Read/write .docx/.doc files, control macOS Microsoft Word"
+  },
+  "l1": {
+    "when": "user wants to read / edit / format / export a Word document (.docx, .doc)",
+    "entry": "doc --help",
+    "effects": "opens or modifies a document in Microsoft Word; writes .docx / .pdf / .html / .rtf / .txt to disk"
+  },
+  "tags": ["productivity", "office", "word-processor"],
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Yome Official",
+    "github": "Whopus"
+  },
+  "commands": [
+    { "action": "open",            "desc": "打开已有 .docx/.doc 文件" },
+    { "action": "new",             "desc": "新建空白文档" },
+    { "action": "save",            "desc": "保存当前文档" },
+    { "action": "close",           "desc": "关闭当前文档" },
+    { "action": "files",           "desc": "列出已打开的文档" },
+
+    { "action": "get",             "desc": "列出所有段落（带预览）" },
+    { "action": "read",            "desc": "读取某个段落的文本和格式" },
+    { "action": "stats",           "desc": "文档统计（字数/段数/字符数/页数）" },
+
+    { "action": "set",             "desc": "覆盖指定段落文本" },
+    { "action": "append",          "desc": "在文档末尾追加段落" },
+    { "action": "insert",          "desc": "在指定段落前插入新段落" },
+    { "action": "delete",          "desc": "删除指定段落" },
+
+    { "action": "fmt",             "desc": "格式化段落（粗体/斜体/字号/颜色/字体/对齐）" },
+
+    { "action": "find",            "desc": "查找文本（首次匹配，返回位置）" },
+    { "action": "replace",         "desc": "替换首个匹配" },
+    { "action": "replace.all",     "desc": "全部替换" },
+    { "action": "highlight",       "desc": "高亮指定段落（黄/绿/...）" },
+
+    { "action": "select",          "desc": "选择指定段落" },
+    { "action": "select.all",      "desc": "全选" },
+    { "action": "cursor.home",     "desc": "光标移动到文档开头" },
+    { "action": "cursor.end",      "desc": "光标移动到文档结尾" },
+
+    { "action": "table.add",       "desc": "插入表格 (--rows --cols)" },
+    { "action": "table.delete",    "desc": "删除指定表格" },
+    { "action": "table.row.add",   "desc": "在表格末尾添加行" },
+    { "action": "table.row.delete","desc": "删除表格指定行" },
+    { "action": "table.col.add",   "desc": "在表格末尾添加列" },
+    { "action": "table.col.delete","desc": "删除表格指定列" },
+    { "action": "table.cell.set",  "desc": "设置表格单元格文本" },
+    { "action": "table.merge",     "desc": "合并表格单元格" },
+
+    { "action": "header.set",      "desc": "设置页眉文本" },
+    { "action": "footer.set",      "desc": "设置页脚文本" },
+    { "action": "header.clear",    "desc": "清除页眉" },
+    { "action": "footer.clear",    "desc": "清除页脚" },
+    { "action": "pagenum",         "desc": "在页眉/页脚插入页码" },
+
+    { "action": "break.page",      "desc": "在当前位置插入分页符" },
+    { "action": "break.section",   "desc": "插入分节符 (continuous/next-page/...)" },
+    { "action": "break.column",    "desc": "插入分栏符" },
+    { "action": "break.line",      "desc": "插入手动换行符" },
+    { "action": "sections",        "desc": "列出所有节" },
+
+    { "action": "bookmark.add",    "desc": "在指定段落添加书签" },
+    { "action": "bookmark.delete", "desc": "删除书签" },
+    { "action": "bookmarks",       "desc": "列出所有书签" },
+
+    { "action": "link.add",        "desc": "在指定段落添加超链接" },
+    { "action": "link.delete",     "desc": "删除指定段落的超链接" },
+
+    { "action": "comment.add",     "desc": "在指定段落添加批注" },
+    { "action": "comment.delete",  "desc": "删除批注" },
+    { "action": "comments",        "desc": "列出所有批注" },
+
+    { "action": "image.add",       "desc": "在文档末尾插入图片" },
+    { "action": "image.delete",    "desc": "删除指定图片" },
+    { "action": "shape.add",       "desc": "插入形状 (rectangle/oval/...)" },
+    { "action": "shape.delete",    "desc": "删除形状" },
+
+    { "action": "style.apply",     "desc": "对段落应用样式 (Heading 1/Normal/...)" },
+    { "action": "styles",          "desc": "列出文档可用样式" },
+
+    { "action": "list.bullet",     "desc": "段落转项目符号列表" },
+    { "action": "list.number",     "desc": "段落转编号列表" },
+    { "action": "list.indent",     "desc": "增加列表缩进" },
+    { "action": "list.outdent",    "desc": "减少列表缩进" },
+
+    { "action": "toc.add",         "desc": "在文档开头插入目录" },
+    { "action": "toc.update",      "desc": "更新目录" },
+    { "action": "toc.delete",      "desc": "删除目录" },
+
+    { "action": "page",            "desc": "页面设置 (--orientation --paper --margin)" },
+    { "action": "columns",         "desc": "设置分栏数" },
+
+    { "action": "view",            "desc": "切换视图模式 (print/web/draft/outline)" },
+    { "action": "zoom",            "desc": "视图缩放 (10..400)" },
+
+    { "action": "track.on",        "desc": "开启修订" },
+    { "action": "track.off",       "desc": "关闭修订" },
+    { "action": "track.accept",    "desc": "接受所有修订" },
+    { "action": "track.reject",    "desc": "拒绝所有修订" },
+
+    { "action": "print",           "desc": "打印文档" },
+    { "action": "export",          "desc": "导出 PDF" },
+    { "action": "export.html",     "desc": "导出 HTML" },
+    { "action": "export.txt",      "desc": "导出纯文本" },
+    { "action": "export.rtf",      "desc": "导出 RTF" },
+
+    { "action": "recalc.fields",   "desc": "更新文档所有域" },
+    { "action": "screen",          "desc": "屏幕刷新 on/off (批量加速)" },
+    { "action": "alerts",          "desc": "弹窗提示 on/off (静默模式)" },
+    { "action": "undo",            "desc": "撤销" },
+    { "action": "redo",            "desc": "重做" },
+    { "action": "version",         "desc": "返回 Word 版本号" }
+  ]
+}

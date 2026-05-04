@@ -1,0 +1,579 @@
+{
+  "$comment": "Declarative macOS backend for @yome/doc. Consumed by cli/src/skills/runner/dispatcher.ts. Each action maps to one .applescript template; placeholders {{name}} / {{name|json}} / {{name|posix}} / {{name|bool}} / {{name|as_int}} / {{name|rgb}} / {{name|align}} / {{name|autoshape}} are filled from positionals/flags before osascript runs. Mirror of Yome/macOS/Bridge/WordBridge.swift.",
+  "appBundleId": "com.microsoft.Word",
+  "appName": "Microsoft Word",
+  "actions": {
+    "open": {
+      "script": "open.applescript",
+      "openViaLaunchServices": true,
+      "pollScript": "open.poll.applescript",
+      "args": [
+        { "name": "path", "from": "positional|--path", "required": true }
+      ],
+      "uses": ["fs:read", "applescript"]
+    },
+    "new": {
+      "script": "new.applescript",
+      "args": [
+        { "name": "path",  "from": "positional|--path", "default": "" },
+        { "name": "force", "from": "--force",            "default": "false" }
+      ],
+      "uses": ["fs:write", "applescript"]
+    },
+    "save": {
+      "script": "save.applescript",
+      "args": [
+        { "name": "path",  "from": "--path",  "default": "" },
+        { "name": "force", "from": "--force", "default": "false" }
+      ],
+      "uses": ["fs:write", "applescript"]
+    },
+    "close": {
+      "script": "close.applescript",
+      "args": [
+        { "name": "save", "from": "--save", "default": "true" }
+      ],
+      "uses": ["applescript"]
+    },
+    "files": {
+      "script": "files.applescript",
+      "uses": ["applescript"]
+    },
+
+    "get": {
+      "script": "get.applescript",
+      "uses": ["applescript"]
+    },
+    "read": {
+      "script": "read.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "stats": {
+      "script": "stats.applescript",
+      "uses": ["applescript"]
+    },
+
+    "set": {
+      "script": "set.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true },
+        { "name": "text",  "from": "--text",             "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "append": {
+      "script": "append.applescript",
+      "args": [
+        { "name": "text", "from": "--text", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "insert": {
+      "script": "insert.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true },
+        { "name": "text",  "from": "--text",             "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "delete": {
+      "script": "delete.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "fmt": {
+      "script": "fmt.applescript",
+      "args": [
+        { "name": "index",  "from": "positional|--index", "required": true },
+        { "name": "bold",   "from": "--bold",   "default": "false" },
+        { "name": "italic", "from": "--italic", "default": "false" },
+        { "name": "size",   "from": "--size",   "default": "" },
+        { "name": "color",  "from": "--color",  "default": "" },
+        { "name": "font",   "from": "--font",   "default": "" },
+        { "name": "align",  "from": "--align",  "default": "" }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "find": {
+      "script": "find.applescript",
+      "args": [
+        { "name": "what",      "from": "positional|--what", "required": true },
+        { "name": "matchCase", "from": "--matchCase",       "default": "false" },
+        { "name": "wholeWord", "from": "--wholeWord",       "default": "false" }
+      ],
+      "uses": ["applescript"]
+    },
+    "replace": {
+      "script": "replace.applescript",
+      "args": [
+        { "name": "what",      "from": "positional|--what", "required": true },
+        { "name": "with",      "from": "--with",            "required": true },
+        { "name": "matchCase", "from": "--matchCase",       "default": "false" },
+        { "name": "wholeWord", "from": "--wholeWord",       "default": "false" }
+      ],
+      "uses": ["applescript"]
+    },
+    "replace.all": {
+      "script": "replace.all.applescript",
+      "args": [
+        { "name": "what",      "from": "positional|--what", "required": true },
+        { "name": "with",      "from": "--with",            "required": true },
+        { "name": "matchCase", "from": "--matchCase",       "default": "false" },
+        { "name": "wholeWord", "from": "--wholeWord",       "default": "false" }
+      ],
+      "uses": ["applescript"]
+    },
+    "highlight": {
+      "script": "highlight.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true },
+        { "name": "color", "from": "--color",            "default": "yellow" }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "select": {
+      "script": "select.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "select.all": {
+      "script": "select.all.applescript",
+      "uses": ["applescript"]
+    },
+    "cursor.home": {
+      "script": "cursor.home.applescript",
+      "uses": ["applescript"]
+    },
+    "cursor.end": {
+      "script": "cursor.end.applescript",
+      "uses": ["applescript"]
+    },
+
+    "table.add": {
+      "script": "table.add.applescript",
+      "args": [
+        { "name": "index", "from": "--index", "default": "" },
+        { "name": "rows",  "from": "--rows",  "default": "3" },
+        { "name": "cols",  "from": "--cols",  "default": "3" }
+      ],
+      "uses": ["applescript"]
+    },
+    "table.delete": {
+      "script": "table.delete.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "table.row.add": {
+      "script": "table.row.add.applescript",
+      "args": [
+        { "name": "table", "from": "positional|--table", "required": true },
+        { "name": "count", "from": "--count",            "default": "1" }
+      ],
+      "uses": ["applescript"]
+    },
+    "table.row.delete": {
+      "script": "table.row.delete.applescript",
+      "args": [
+        { "name": "table", "from": "positional|--table", "required": true },
+        { "name": "row",   "from": "--row",              "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "table.col.add": {
+      "script": "table.col.add.applescript",
+      "args": [
+        { "name": "table", "from": "positional|--table", "required": true },
+        { "name": "count", "from": "--count",            "default": "1" }
+      ],
+      "uses": ["applescript"]
+    },
+    "table.col.delete": {
+      "script": "table.col.delete.applescript",
+      "args": [
+        { "name": "table", "from": "positional|--table", "required": true },
+        { "name": "col",   "from": "--col",              "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "table.cell.set": {
+      "script": "table.cell.set.applescript",
+      "args": [
+        { "name": "table", "from": "positional|--table", "required": true },
+        { "name": "row",   "from": "--row",              "required": true },
+        { "name": "col",   "from": "--col",              "required": true },
+        { "name": "text",  "from": "--text",             "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "table.merge": {
+      "script": "table.merge.applescript",
+      "args": [
+        { "name": "table",    "from": "positional|--table", "required": true },
+        { "name": "fromRow",  "from": "--fromRow",          "required": true },
+        { "name": "fromCol",  "from": "--fromCol",          "required": true },
+        { "name": "toRow",    "from": "--toRow",            "required": true },
+        { "name": "toCol",    "from": "--toCol",            "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "header.set": {
+      "script": "header.set.applescript",
+      "args": [
+        { "name": "text", "from": "positional|--text", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "footer.set": {
+      "script": "footer.set.applescript",
+      "args": [
+        { "name": "text", "from": "positional|--text", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "header.clear": {
+      "script": "header.clear.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "footer.clear": {
+      "script": "footer.clear.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "pagenum": {
+      "script": "pagenum.applescript",
+      "args": [
+        { "name": "where",  "from": "--where",  "default": "footer" },
+        { "name": "align",  "from": "--align",  "default": "center" }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "break.page": {
+      "script": "break.page.applescript",
+      "args": [
+        { "name": "index", "from": "--index", "default": "" }
+      ],
+      "uses": ["applescript"]
+    },
+    "break.section": {
+      "script": "break.section.applescript",
+      "args": [
+        { "name": "index", "from": "--index", "default": "" },
+        { "name": "kind",  "from": "--kind",  "default": "next-page" }
+      ],
+      "uses": ["applescript"]
+    },
+    "break.column": {
+      "script": "break.column.applescript",
+      "args": [
+        { "name": "index", "from": "--index", "default": "" }
+      ],
+      "uses": ["applescript"]
+    },
+    "break.line": {
+      "script": "break.line.applescript",
+      "args": [
+        { "name": "index", "from": "--index", "default": "" }
+      ],
+      "uses": ["applescript"]
+    },
+    "sections": {
+      "script": "sections.applescript",
+      "uses": ["applescript"]
+    },
+
+    "bookmark.add": {
+      "script": "bookmark.add.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true },
+        { "name": "name",  "from": "--name",             "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "bookmark.delete": {
+      "script": "bookmark.delete.applescript",
+      "args": [
+        { "name": "name", "from": "positional|--name", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "bookmarks": {
+      "script": "bookmarks.applescript",
+      "uses": ["applescript"]
+    },
+
+    "link.add": {
+      "script": "link.add.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true },
+        { "name": "url",   "from": "--url",              "required": true },
+        { "name": "text",  "from": "--text",             "default": "" }
+      ],
+      "uses": ["applescript"]
+    },
+    "link.delete": {
+      "script": "link.delete.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "comment.add": {
+      "script": "comment.add.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true },
+        { "name": "text",  "from": "--text",             "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "comment.delete": {
+      "script": "comment.delete.applescript",
+      "args": [
+        { "name": "comment", "from": "positional|--comment", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "comments": {
+      "script": "comments.applescript",
+      "uses": ["applescript"]
+    },
+
+    "image.add": {
+      "script": "image.add.applescript",
+      "args": [
+        { "name": "path",  "from": "positional|--path", "required": true },
+        { "name": "index", "from": "--index",           "default": "" }
+      ],
+      "uses": ["fs:read", "applescript"]
+    },
+    "image.delete": {
+      "script": "image.delete.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "shape.add": {
+      "script": "shape.add.applescript",
+      "args": [
+        { "name": "kind",   "from": "--kind",   "default": "rectangle" },
+        { "name": "left",   "from": "--left",   "default": "100" },
+        { "name": "top",    "from": "--top",    "default": "100" },
+        { "name": "width",  "from": "--width",  "default": "200" },
+        { "name": "height", "from": "--height", "default": "100" },
+        { "name": "text",   "from": "--text",   "default": "" }
+      ],
+      "uses": ["applescript"]
+    },
+    "shape.delete": {
+      "script": "shape.delete.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "style.apply": {
+      "script": "style.apply.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true },
+        { "name": "style", "from": "--style",            "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "styles": {
+      "script": "styles.applescript",
+      "uses": ["applescript"]
+    },
+
+    "list.bullet": {
+      "script": "list.bullet.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "list.number": {
+      "script": "list.number.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "list.indent": {
+      "script": "list.indent.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "list.outdent": {
+      "script": "list.outdent.applescript",
+      "args": [
+        { "name": "index", "from": "positional|--index", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "toc.add": {
+      "script": "toc.add.applescript",
+      "args": [
+        { "name": "levels", "from": "--levels", "default": "3" }
+      ],
+      "uses": ["applescript"]
+    },
+    "toc.update": {
+      "script": "toc.update.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "toc.delete": {
+      "script": "toc.delete.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+
+    "page": {
+      "script": "page.applescript",
+      "args": [
+        { "name": "orientation", "from": "--orientation", "default": "" },
+        { "name": "paper",       "from": "--paper",       "default": "" },
+        { "name": "margin",      "from": "--margin",      "default": "" }
+      ],
+      "uses": ["applescript"]
+    },
+    "columns": {
+      "script": "columns.applescript",
+      "args": [
+        { "name": "count", "from": "positional|--count", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "view": {
+      "script": "view.applescript",
+      "args": [
+        { "name": "mode", "from": "positional|--mode", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "zoom": {
+      "script": "zoom.applescript",
+      "args": [
+        { "name": "level", "from": "positional|--level", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+
+    "track.on": {
+      "script": "track.on.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "track.off": {
+      "script": "track.off.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "track.accept": {
+      "script": "track.accept.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "track.reject": {
+      "script": "track.reject.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+
+    "print": {
+      "script": "print.applescript",
+      "args": [
+        { "name": "copies", "from": "--copies", "default": "1" }
+      ],
+      "uses": ["applescript"]
+    },
+    "export": {
+      "script": "export.applescript",
+      "args": [
+        { "name": "path",  "from": "positional|--path", "required": true },
+        { "name": "force", "from": "--force",           "default": "false" }
+      ],
+      "uses": ["fs:write", "applescript"]
+    },
+    "export.html": {
+      "script": "export.html.applescript",
+      "args": [
+        { "name": "path",  "from": "positional|--path", "required": true },
+        { "name": "force", "from": "--force",           "default": "false" }
+      ],
+      "uses": ["fs:write", "applescript"]
+    },
+    "export.txt": {
+      "script": "export.txt.applescript",
+      "args": [
+        { "name": "path",  "from": "positional|--path", "required": true },
+        { "name": "force", "from": "--force",           "default": "false" }
+      ],
+      "uses": ["fs:write", "applescript"]
+    },
+    "export.rtf": {
+      "script": "export.rtf.applescript",
+      "args": [
+        { "name": "path",  "from": "positional|--path", "required": true },
+        { "name": "force", "from": "--force",           "default": "false" }
+      ],
+      "uses": ["fs:write", "applescript"]
+    },
+
+    "recalc.fields": {
+      "script": "recalc.fields.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "screen": {
+      "script": "screen.applescript",
+      "args": [
+        { "name": "state", "from": "positional|--state", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "alerts": {
+      "script": "alerts.applescript",
+      "args": [
+        { "name": "state", "from": "positional|--state", "required": true }
+      ],
+      "uses": ["applescript"]
+    },
+    "undo": {
+      "script": "undo.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "redo": {
+      "script": "redo.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    },
+    "version": {
+      "script": "version.applescript",
+      "args": [],
+      "uses": ["applescript"]
+    }
+  }
+}
