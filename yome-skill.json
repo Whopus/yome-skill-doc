@@ -4,18 +4,87 @@
   "name": "Word",
   "description": "Word 文档全功能命令（基础读写 + 表格/页眉页脚/查找替换/书签/超链接/批注/图片形状/样式/列表/目录/分节/页面设置/打印/视图/修订 等）",
   "domain": "doc",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "official": true,
   "homepage": "https://yome.work/skills/@yome/doc",
   "repo": "https://github.com/Whopus/yome-skill-doc",
   "yome_min_version": "1.0.0",
-  "platforms": ["macos"],
+  "platforms": ["macos", "linux", "windows", "node", "python"],
   "delivery": {
     "macos": {
       "backend": "ota",
       "package": "backends/macos",
       "manifest": "manifest.json",
       "implements_signature": ">=1.0.0 <2.0.0"
+    },
+    "node": {
+      "backend": "ota",
+      "package": "backends/node",
+      "entry": "src/index.mjs",
+      "runtime": "node>=18",
+      "engine": "node-docx-xml",
+      "implements_signature": ">=1.0.0 <2.0.0"
+    },
+    "python": {
+      "backend": "ota",
+      "package": "backends/python",
+      "entry": "doc_backend.py",
+      "runtime": "python>=3.9",
+      "engine": "python-docx",
+      "implements_signature": ">=1.0.0 <2.0.0"
+    }
+  },
+  "backends": {
+    "applescript-word": {
+      "runtime": "applescript",
+      "engine": "Microsoft Word",
+      "platforms": ["macos"],
+      "supports": ["*"]
+    },
+    "node-docx-xml": {
+      "runtime": "node",
+      "engine": "node-docx-xml",
+      "platforms": ["linux", "macos", "windows"],
+      "supports": [
+        "open", "new", "save", "close", "files",
+        "get", "read", "stats",
+        "set", "append", "insert", "delete",
+        "fmt", "find", "replace", "replace.all", "highlight",
+        "table.add", "table.delete", "table.row.add", "table.row.delete",
+        "table.col.add", "table.col.delete", "table.cell.set",
+        "header.set", "footer.set", "header.clear", "footer.clear",
+        "break.page", "break.line", "sections",
+        "link.add", "style.apply", "styles", "list.bullet", "list.number",
+        "export.txt", "version", "screen", "alerts"
+      ]
+    },
+    "python-docx": {
+      "runtime": "python",
+      "engine": "python-docx",
+      "platforms": ["linux", "macos", "windows"],
+      "supports": [
+        "open", "new", "save", "close", "files",
+        "get", "read", "stats",
+        "set", "append", "insert", "delete",
+        "fmt", "find", "replace", "replace.all", "highlight",
+        "table.add", "table.delete", "table.row.add", "table.row.delete",
+        "table.col.add", "table.col.delete", "table.cell.set", "table.merge",
+        "header.set", "footer.set", "header.clear", "footer.clear",
+        "break.page", "break.line", "sections",
+        "link.add", "image.add", "style.apply", "styles", "list.bullet", "list.number",
+        "export.txt", "version", "screen", "alerts"
+      ]
+    }
+  },
+  "adapters": {
+    "linux": {
+      "prefer": ["node-docx-xml", "python-docx"]
+    },
+    "macos": {
+      "prefer": ["applescript-word", "node-docx-xml", "python-docx"]
+    },
+    "windows": {
+      "prefer": ["node-docx-xml", "python-docx"]
     }
   },
   "ota_overlay": {
@@ -26,13 +95,13 @@
   "capabilities": ["fs:read", "fs:write", "applescript"],
   "system_capabilities": ["fs:read", "fs:write", "applescript"],
   "permissions_summary": {
-    "zh": "读写 .docx/.doc 文件，调用 macOS Microsoft Word",
-    "en": "Read/write .docx/.doc files, control macOS Microsoft Word"
+    "zh": "读写 .docx/.doc 文件；macOS 可调用 Microsoft Word，Linux/Windows 可用 Node 或 python-docx 后端读写 .docx",
+    "en": "Read/write .docx/.doc files; macOS can control Microsoft Word, Linux/Windows can use Node or python-docx backends for .docx"
   },
   "l1": {
     "when": "user wants to read / edit / format / export a Word document (.docx, .doc)",
     "entry": "doc --help",
-    "effects": "opens or modifies a document in Microsoft Word; writes .docx / .pdf / .html / .rtf / .txt to disk"
+    "effects": "opens or modifies a document; writes .docx / .txt on headless Node/Python hosts, and .docx / .pdf / .html / .rtf / .txt through Microsoft Word on macOS"
   },
   "tags": ["productivity", "office", "word-processor"],
   "license": "Apache-2.0",
