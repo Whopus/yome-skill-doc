@@ -1,7 +1,7 @@
 -- doc get — list paragraphs (TSV: index, preview)
 set TAB_CHAR to (ASCII character 9)
 set LF_CHAR to (ASCII character 10)
-set rows to {"index" & TAB_CHAR & "text"}
+set out to "index" & TAB_CHAR & "text"
 
 tell application "Microsoft Word"
     tell active document
@@ -9,7 +9,11 @@ tell application "Microsoft Word"
         repeat with i from 1 to pc
             set paraText to content of text object of paragraph i
             if paraText ends with return then
-                set paraText to text 1 thru -2 of paraText
+                if (length of paraText) > 1 then
+                    set paraText to text 1 thru -2 of paraText
+                else
+                    set paraText to ""
+                end if
             end if
             if (length of paraText) > 80 then
                 set preview to (text 1 thru 80 of paraText) & "..."
@@ -26,12 +30,9 @@ tell application "Microsoft Word"
             set AppleScript's text item delimiters to " "
             set preview to tmp as string
             set AppleScript's text item delimiters to ""
-            set end of rows to (i as string) & TAB_CHAR & preview
+            set out to out & LF_CHAR & (i as string) & TAB_CHAR & preview
         end repeat
     end tell
 end tell
 
-set AppleScript's text item delimiters to LF_CHAR
-set out to rows as string
-set AppleScript's text item delimiters to ""
 return out

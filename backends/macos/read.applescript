@@ -7,7 +7,11 @@ tell application "Microsoft Word"
         set p to paragraph idx
         set paraText to content of text object of p
         if paraText ends with return then
-            set paraText to text 1 thru -2 of paraText
+            if (length of paraText) > 1 then
+                set paraText to text 1 thru -2 of paraText
+            else
+                set paraText to ""
+            end if
         end if
         set fo to font object of text object of p
         set isBold to (bold of fo) as string
