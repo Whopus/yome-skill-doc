@@ -23,7 +23,7 @@
     "save": {
       "script": "save.applescript",
       "args": [
-        { "name": "path",  "from": "--path",  "default": "" },
+        { "name": "path",  "from": "positional|--path", "default": "" },
         { "name": "force", "from": "--force", "default": "false" }
       ],
       "uses": ["fs:write", "applescript"]

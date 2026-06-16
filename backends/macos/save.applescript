@@ -1,4 +1,4 @@
--- doc save [--path=<save_as>] [--force]
+-- doc save [<path>] [--path=<save_as>] [--force]
 set savePath to {{path|json}}
 
 if savePath is "" then
